@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="!userid" id="qrcode"></div>
+    <div v-if="!userid && !code" id="qrcode"></div>
     <div v-else>userid:{{userid}}</div>
   </div>
 </template>
@@ -10,7 +10,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      userid: ""
+      userid: "",
+      code: ""
     };
   },
   name: "app",
@@ -25,6 +26,7 @@ export default {
       redirect_uri: process.env.VUE_APP_scanUri
     });
     let code = this.getUrlArgStr("code");
+    this.code = code;
     if (code) {
       let res = await axios.get(
         `${process.env.VUE_APP_host}/api/funenc/wx/scan-get-user-info?userid=${

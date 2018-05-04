@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="!nick" id="qrcode"></div>
+    <div v-if="!nick && !code" id="qrcode"></div>
     <div v-else>nick:{{nick}}</div>
   </div>
 </template>
@@ -10,7 +10,8 @@ import axios from "axios";
 export default {
   data() {
     return {
-      nick: ""
+      nick: "",
+      code: ""
     };
   },
   name: "app",
@@ -38,6 +39,7 @@ export default {
       window.attachEvent("onmessage", this.hanndleMessage);
     }
     var code = this.getUrlArgStr("code");
+    this.code = code;
     if (code) {
       let res = await axios.get(
         `${process.env.VUE_APP_host}/api/funenc/dd/scan-get-user-info?userid=${
